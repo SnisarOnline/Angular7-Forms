@@ -1,0 +1,60 @@
+<template-borders [title]="title" [description]="description">
+
+
+
+  <form (ngSubmit)="createTasks()" >
+
+    <div class="form-group">
+      <label for="firstName"> FirstName : </label>
+      <input id="firstName" type="text" class="form-control" required
+             [(ngModel)]="objectSimpleForm.firstName" name="firstName"
+              #firstName="ngModel" >
+      <!--
+       выше добавляется шаблонная переменная(templateReferenceVariable) и хранит в себе ссылку на дом елемент,
+       А такая(#firstName="ngModel")  запись шаблонной переменной означает привязку ngModel к домЕлементу.
+       И переменная Хранит всебе не домЕлемент. А, ngModel ктоторый привязался к домЕлементу.
+       Поетому мы можем получить дополнительные данные.
+      -->
+      <!-- Добавили вывод ошибки -->
+      <div [hidden]="firstName.valid || firstName.pristine" class="alert alert-danger" >
+        Поле обязательно для заполнения
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="age"> Age : </label>
+      <input id="age" type="text" class="form-control" required
+             [(ngModel)]="objectSimpleForm.age" name="age"
+             #age="ngModel" >
+      <!-- Добавили вывод ошибки -->
+      <div [hidden]="age.valid || age.pristine" class="alert alert-danger" >
+        Поле обязательно для заполнения
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="role"> Role : </label>
+      <select id="role" class="form-control" required
+              [(ngModel)]="objectSimpleForm.role" name="role" >
+        <option *ngFor="let r of roles" [value]="r"> {{r}} </option>
+      </select>
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary" >Submit</button>
+    <button type="reset" class="btn btn-warning" >reset</button>
+  </form>
+
+
+
+
+
+
+
+
+  <template-list [title]="title" [addNewObject]="objectSimpleForm" [submit]="submit"></template-list>
+
+</template-borders>

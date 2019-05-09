@@ -1,0 +1,83 @@
+<template-borders [title]="title" [description]="description">
+
+
+
+
+  <form (ngSubmit)="createTasks($event)" novalidate >
+
+    <div class="form-group">
+      <label for="firstName"> FirstName : </label>
+      <input id="firstName" type="text"
+             class="form-control"
+             [formControl]="firstName"
+             required >
+      <!-- Удалили привязки [(ngModel)] , и вместо нее [formControl]="firstName" -->
+      <!-- Снова поменялся вывод ошибки -->
+      <div class="alert alert-danger" [hidden]="firstName.valid || firstName.untouched" >
+        Некорректный firstName
+        <div *ngIf="firstName.getError('cannotContainMinMaxLength')">
+          мин = 3; макс = 60, символов   {{firstName.getError('cannotContainMinMaxLength')}}
+        </div>
+        <div *ngIf="firstName.getError('cannotContainSeparator')">
+          В строке недопустимые символы   {{firstName.getError('cannotContainSeparator')}}
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="age"> Age : </label>
+      <input id="age" type="text"
+             class="form-control"
+             [formControl]="age"
+             required >
+      <!-- Снова поменялся вывод ошибки -->
+      <div [hidden]="age.valid || age.untouched" class="alert alert-danger">
+        Некорректный age
+        <div *ngIf="age.getError('required')">
+           А поле Нужно заполнять ? - {{age.getError('required')}}
+        </div>
+        <div *ngIf="age.getError('min')">
+          мин  Число {{age.getError('min').min}}
+        </div>
+        <div *ngIf="age.getError('max')">
+          макс Число {{age.getError('max').max}}
+        </div>
+        <div *ngIf="age.getError('pattern')">
+          Недопустимые символы согласно патерну {{age.getError('pattern').requiredPattern}}
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="role"> Role : </label>
+      <select id="role"
+              class="form-control"
+              [formControl]="role"
+              required >
+        <option *ngFor="let r of roles" [value]="r"> role {{r}} </option>
+      </select>
+      <!-- Снова поменялся вывод ошибки -->
+      <div [hidden]="role.valid || role.untouched" class="alert alert-danger">
+        Не выбранна Role
+        <div *ngIf="role.getError('required')">
+          А поле Нужно заполнять ? - {{role.getError('required')}}
+        </div>
+      </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary" [disabled]="!(firstName.valid && age.valid && role.valid)">Submit</button>
+    <button type="reset" class="btn btn-warning" >reset</button>
+  </form>
+
+
+
+
+
+
+
+  <template-list [title]="title" [addNewObject]="objectFormControl" [submit]="submit"></template-list>
+
+</template-borders>

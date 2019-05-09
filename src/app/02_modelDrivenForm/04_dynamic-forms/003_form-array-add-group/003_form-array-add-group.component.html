@@ -1,0 +1,79 @@
+<template-borders [title]="title" [description]="description" >
+
+
+
+
+  <form [formGroup]="objectDynamicForm" (ngSubmit)="createTasks()" novalidate>
+
+    <div class="form-group">
+      <label for="firstName"> FirstName : </label>
+      <input id="firstName" type="text"
+             class="form-control"
+             formControlName="firstName">
+      <div class="alert alert-danger"
+           *ngIf="objectDynamicForm.get('firstName').errors && objectDynamicForm.get('firstName').touched">
+
+        <div *ngIf="objectDynamicForm.get('firstName').errors && !objectDynamicForm.get('firstName').untouched">
+          поиск Ошибки по регулярному выражению Работает
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Один Масив отдельно сгрупированных элементов управления -->
+    <div formArrayName="address" class="form-group">
+      <!-- Определим часть повторяющегося кода -->
+
+      <div *ngFor="let X of addressFormArray.controls; index as IndexFormAddressArray">
+
+        <span>Address {{IndexFormAddressArray + 1}}</span>
+
+        <!-- Выводим на всех Group формах -->
+        <span class="btn btn-sm btn-danger"
+              *ngIf="objectDynamicForm.get('address').controls.length > 1"
+              (click)="removeInput(IndexFormAddressArray)"> Remove {{IndexFormAddressArray + 1}}</span>
+
+
+
+
+        <!-- мы работаем с групой форм поетому Груперуем их -->
+        <div  [formGroupName]="IndexFormAddressArray">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+
+
+                <label > City :
+                  <input type="text" class="form-control" formControlName="city"  >
+                </label>
+
+
+                <label >Street :
+                  <input type="text" class="form-control" formControlName="street">
+                </label>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+    <button type="submit" class="btn btn-primary" [disabled]="objectDynamicForm.invalid" > Submit </button>
+    <button type="reset" class="btn btn-warning" >Reset</button>
+    <button type="reset" class="btn btn-info" (click)="addInput()" >Add New Group</button>
+  </form>
+
+
+
+
+
+  <template-list [title]="title" [addNewObject]="objectDynamicForm.value" [submit]="submit"></template-list>
+
+</template-borders>

@@ -1,0 +1,141 @@
+<template-borders [title]="title" [description]="description">
+
+
+
+<!-- Добавляем [formGroup]="objectFormGroup" И всю валидацию можно перенести в TS файл -->
+  <form [formGroup]="objectFormGroup" (ngSubmit)="createTasks()" novalidate>
+
+    <div class="form-group">
+      <label for="firstName"> FirstName : </label>
+      <input id="firstName" type="text"
+             class="form-control"
+             formControlName="firstName"
+             required > <!--Указывая в HTML required, Можно не указывать "Validators.required". Отрабатывает одинаково -->
+      <!-- Удалили привязки [formControl]="firstName" , и вместо нее formControlName="firstName"  -->
+      <!-- Снова поменялся вывод ошибки -->
+      <div class="alert alert-danger"
+           *ngIf="objectFormGroup.get('firstName').errors && objectFormGroup.get('firstName').touched">
+
+        <div *ngIf="objectFormGroup.get('firstName').hasError('required')">
+          А поле Нужно заполнять ? - {{objectFormGroup.get('firstName').hasError('required')}}
+        </div>
+        <div *ngIf="objectFormGroup.get('firstName').hasError('minlength')">
+          мин {{objectFormGroup.get('firstName').getError('minlength').requiredLength }} Символа
+        </div>
+        <div *ngIf="objectFormGroup.get('firstName').hasError('pattern')"> <!--hasError - вернет boolean-->
+          Недопустимые символы по регулярному выражению
+          {{objectFormGroup.get('firstName').getError('pattern').requiredPattern}} <!--getError - вернет Object-->
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="age"> Age : </label>
+      <input id="age" type="text"
+             class="form-control"
+             formControlName="age" > <!-- В HTML Можно не указывать required Если указан Validators.required -->
+      <!-- Снова поменялся вывод ошибки -->
+      <div class="alert alert-danger"
+           *ngIf="objectFormGroup.get('age').errors && !objectFormGroup.get('age').untouched" >
+        Некорректный age <br>
+        <i>'hasError' - вернет Boolean</i><br>
+        <i>'getError' - вернет Object</i><br>
+
+        <div *ngIf="objectFormGroup.get('age').hasError('required')">
+          А поле Нужно заполнять ? - {{objectFormGroup.get('age').hasError('required')}}
+        </div>
+        <div *ngIf="objectFormGroup.get('age').hasError('min')"> <!--hasError - вернет boolean-->
+          мин  Число {{objectFormGroup.get('age').hasError('min').min }} <!-- для примера получим .min -->
+        </div>
+        <div *ngIf="objectFormGroup.get('age').getError('max')"> <!-- Ну конечно можно и так, но не красиво -->
+          макс Число {{objectFormGroup.get('age').getError('max').max}}  <!--getError - вернет Object-->
+        </div>
+        <div *ngIf="objectFormGroup.get('age').getError('pattern')">
+          Недопустимые символы согласно патерну {{objectFormGroup.get('age').getError('pattern').requiredPattern}}
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="role"> Role : </label>
+      <select id="role"
+              class="form-control"
+              formControlName="role" >
+        <option *ngFor="let r of roles" [value]="r"> {{r}} </option>
+      </select>
+      <!-- Снова поменялся вывод ошибки -->
+
+    </div>
+
+
+    <!-- Группа отдельных элементов управления -->
+    <div formGroupName="authorization" class="form-group">
+      <div class="form-row">
+        <div class="col" >
+
+          <label for="email" > Email address :</label>
+          <input id="email" type="text"
+                 class="form-control"
+                 formControlName="email" >
+          <!-- Вывод ошибкок -->
+          <div class="alert alert-danger"
+               *ngIf="objectFormGroup.get('authorization').get('email').errors
+               &&
+               objectFormGroup.get('authorization').get('email').touched"
+          >
+
+            <div *ngIf="objectFormGroup.get('authorization').get('email').hasError('required')">
+              А поле Нужно заполнить! - {{objectFormGroup.get('authorization').get('email').hasError('required')}}
+            </div>
+            <div *ngIf="objectFormGroup.get('authorization').get('email').hasError('email')">
+              Встроенный "Validators.email" - Недоволен
+            </div>
+          </div>
+
+        </div>
+        <div class="col">
+
+          <label for="password" > Password :</label>
+          <input id="password" type="text"
+                 class="form-control"
+                 formControlName="password" >
+          <!-- Вывод ошибкок -->
+          <div class="alert alert-danger"
+               *ngIf="objectFormGroup.get('authorization').get('password').errors
+               &&
+               objectFormGroup.get('authorization').get('password').touched"
+          >
+
+            <div *ngIf="objectFormGroup.get('authorization').get('password').hasError('required')">
+              А поле Нужно заполнить! - {{objectFormGroup.get('authorization').get('password').hasError('required')}}
+            </div>
+            <div *ngIf="objectFormGroup.get('authorization').get('password').hasError('minlength')">
+              мин Кол.символов {{objectFormGroup.get('authorization').get('password').getError('minlength').requiredLength }}
+            </div>
+            <div *ngIf="objectFormGroup.get('authorization').get('password').hasError('maxlength')">
+              макс Кол.символов {{objectFormGroup.get('authorization').get('password').getError('maxlength').requiredLength}}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <!-- Заменяем проверку валидности формы -->
+    <button type="submit" class="btn btn-primary" [disabled]="objectFormGroup.invalid" > Submit </button>
+    <button type="reset" class="btn btn-warning" >reset</button>
+  </form>
+
+
+
+
+
+
+  <template-list  [title]="title" [addNewObject]="objectFormGroup.value" [submit]="submit"></template-list>
+
+</template-borders>

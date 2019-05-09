@@ -1,0 +1,17 @@
+<template-borders [title]="title" [description]="description">
+
+  <div class="container">
+    <p> Ето базовые стили используемые для валидации формы </p>
+
+    <input type="text" [(ngModel)]="title" #myInput required>
+    <p>Input style : <b>{{ myInput.className }}</b> </p>
+
+    <p>Обратить внимание на изменение классов input, при следуйших действиях</p>
+    <ol>
+      <li>Кликнуть на поле ввода а потом за его пределами <i>( ng-untouched => ng-touched )</i> </li>
+      <li>Ввести значение в поле ввода <i>( ng-pristine => ng-dirty )</i> </li>
+      <li>Очистить поле <i>( ng-valid => ng-invalid )</i> </li>
+    </ol>
+  </div>
+
+</template-borders>

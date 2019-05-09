@@ -1,0 +1,30 @@
+<h1 [innerHTML]="titlePage"></h1>
+<p> {{descriptionPage}} </p>
+
+
+<accordion>
+    <accordion-group heading="Основные возможности">
+        <!-- 001 -->
+        <app-form-control></app-form-control>
+        <!-- 002 -->
+        <app-form-group></app-form-group>
+        <!-- 003 -->
+        <app-form-builder></app-form-builder>
+    </accordion-group>
+    <accordion-group heading="Динамические формы">
+        <!-- 004 -->
+        <app-form-control-add-one></app-form-control-add-one>
+        <app-form-array-add-one></app-form-array-add-one>
+        <app-form-array-add-group></app-form-array-add-group>
+    </accordion-group>
+    <accordion-group heading="форма как шаблон">
+        <!-- 005 -->
+        <template-form-group-list></template-form-group-list>
+        <template-form-builder-list></template-form-builder-list>
+    </accordion-group>
+</accordion>
+
+
+
+
+

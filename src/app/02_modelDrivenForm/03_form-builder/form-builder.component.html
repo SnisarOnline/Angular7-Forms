@@ -1,0 +1,179 @@
+<template-borders [title]="title" [description]="description">
+
+
+
+
+
+
+
+  <form [formGroup]="objectFormBuilder" (ngSubmit)="createTasks()" novalidate>
+
+    <div class="form-group">
+      <label for="firstName"> FirstName : </label>
+      <input id="firstName" type="text"
+             class="form-control"
+             formControlName="firstName">
+      <div class="alert alert-danger"
+           *ngIf="objectFormBuilder.get('firstName').errors && objectFormBuilder.get('firstName').touched">
+
+        <div *ngIf="objectFormBuilder.get('firstName').hasError('required')">
+          А поле Нужно заполнять ? - {{objectFormBuilder.get('firstName').hasError('required')}}
+        </div>
+        <div *ngIf="objectFormBuilder.get('firstName').hasError('minlength')">
+          мин {{objectFormBuilder.get('firstName').getError('minlength').requiredLength }} Символа
+        </div>
+        <div *ngIf="objectFormBuilder.get('firstName').hasError('pattern')">
+          Недопустимые символы по регулярному выражению
+          {{objectFormBuilder.get('firstName').getError('pattern').requiredPattern}}
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="age"> Age : </label>
+      <input id="age" type="text"
+             class="form-control"
+             formControlName="age" >
+      <div class="alert alert-danger"
+           *ngIf="objectFormBuilder.get('age').errors && !objectFormBuilder.get('age').untouched" >
+        Некорректный age <br>
+        <i>'hasError' - вернет Boolean</i><br>
+        <i>'getError' - вернет Object</i><br>
+
+        <div *ngIf="objectFormBuilder.get('age').hasError('required')">
+          А поле Нужно заполнять ? - {{objectFormBuilder.get('age').hasError('required')}}
+        </div>
+        <div *ngIf="objectFormBuilder.get('age').hasError('min')">
+          мин  Число {{objectFormBuilder.get('age').getError('min').min }}
+        </div>
+        <div *ngIf="objectFormBuilder.get('age').hasError('max')">
+          макс Число {{objectFormBuilder.get('age').getError('max').max}}
+        </div>
+        <div *ngIf="objectFormBuilder.get('age').hasError('pattern')">
+          Недопустимые символы согласно патерну {{objectFormBuilder.get('age').getError('pattern').requiredPattern}}
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="role"> Role : </label>
+      <select id="role"
+              class="form-control"
+              formControlName="role" >
+        <option *ngFor="let r of roles" [value]="r"> {{r}} </option>
+      </select>
+    </div>
+
+
+    <!-- Группа отдельных элементов управления -->
+    <div formGroupName="authorization" class="form-group">
+      <div class="form-row">
+        <div class="col" >
+
+          <label for="email" > Email address :</label>
+          <input id="email" type="text"
+                 class="form-control"
+                 formControlName="email" >
+          <!-- Вывод ошибкок -->
+          <div class="alert alert-danger"
+               *ngIf="objectFormBuilder.get('authorization').get('email').errors
+               &&
+               objectFormBuilder.get('authorization').get('email').touched"
+          >
+
+            <div *ngIf="objectFormBuilder.get('authorization').get('email').hasError('required')">
+              А поле Нужно заполнить! - {{objectFormBuilder.get('authorization').get('email').hasError('required')}}
+            </div>
+            <div *ngIf="objectFormBuilder.get('authorization').get('email').hasError('pattern')">
+              Атеперь своей регуляркой проверяем "email" <br>
+              {{objectFormBuilder.get('authorization').get('email').getError('pattern').requiredPattern }}
+            </div>
+          </div>
+
+        </div>
+        <div class="col">
+
+          <label for="password" > Password :</label>
+          <input id="password" type="text"
+                 class="form-control"
+                 formControlName="password" >
+          <!-- Вывод ошибкок -->
+          <div class="alert alert-danger"
+               *ngIf="objectFormBuilder.get('authorization').get('password').errors
+               &&
+               objectFormBuilder.get('authorization').get('password').touched"
+          >
+
+            <div *ngIf="objectFormBuilder.get('authorization').get('password').hasError('required')">
+              А поле Нужно заполнить! - {{objectFormBuilder.get('authorization').get('password').hasError('required')}}
+            </div>
+            <div *ngIf="objectFormBuilder.get('authorization').get('password').hasError('pattern')">
+              Атеперь своей регуляркой проверяем "password" <br>
+              {{objectFormBuilder.get('authorization').get('password').getError('pattern').requiredPattern }}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Группа отдельных элементов управления -->
+    <div formGroupName="address" class="form-group">
+      <div class="form-row">
+
+        <div class="col" >
+
+          <label for="street" > Street :</label>
+          <input id="street" type="text"
+                 class="form-control"
+                 formControlName="street" >
+          <!-- Вывод ошибки -->
+          <div class="alert alert-danger"
+               *ngIf="objectFormBuilder.get('address').get('street').errors
+               &&
+               objectFormBuilder.get('address').get('street').touched"
+          >
+            <div *ngIf="objectFormBuilder.get('address').get('street').hasError('required')">
+              Нужно заполнить
+            </div>
+            <div *ngIf="objectFormBuilder.get('address').get('street').hasError('pattern')">
+              А должно быть : {{objectFormBuilder.get('address').get('street').getError('pattern').requiredPattern}}
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col">
+
+          <label for="city" > City :</label>
+          <input id="city" type="text"
+                 class="form-control"
+                 formControlName="city" >
+          <!-- Вывод ошибки -->
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+    <!-- Заменяем проверку валидности формы -->
+    <button type="submit" class="btn btn-primary" [disabled]="objectFormBuilder.invalid" > Submit </button>
+    <button type="reset" class="btn btn-warning" >reset</button>
+  </form>
+
+
+
+
+
+
+
+
+
+  <template-list [title]="title" [addNewObject]="objectFormBuilder.value" [submit]="submit"></template-list>
+
+</template-borders>

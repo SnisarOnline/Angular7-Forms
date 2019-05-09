@@ -1,0 +1,27 @@
+<template-borders [title]="title" [description]="description" >
+
+
+
+
+  <form [formGroup]="objectDynamicForm" (ngSubmit)="createTasks()" novalidate>
+
+    <div class="form-group" *ngFor="let controlName of arrControlName">
+      <label > {{ controlName }} : </label>
+      <input type="text" class="form-control" formControlName="{{controlName}}">
+    </div>
+
+
+
+    <!--<button type="submit" class="btn btn-primary" [disabled]="objectDynamicForm.invalid" > Submit </button>-->
+    <button type="submit" class="btn btn-success"  > Submit </button>
+    <button type="reset" class="btn btn-warning" >Reset</button>
+    <button type="reset" class="btn btn-info" (click)="addInput()" >Add New Input</button>
+  </form>
+
+
+
+
+
+  <template-list [title]="title" [addNewObject]="objectDynamicForm.value" [submit]="submit"></template-list>
+
+</template-borders>

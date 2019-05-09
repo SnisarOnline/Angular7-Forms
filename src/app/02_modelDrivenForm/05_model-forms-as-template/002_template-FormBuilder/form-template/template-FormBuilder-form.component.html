@@ -1,0 +1,143 @@
+Old Object: {{oldObject|json}}
+
+<form class="" [formGroup]="objectFormBuilder" >
+
+
+  <div class="form-group">
+    <label for="firstName"> FirstName : </label>
+    <input id="firstName" type="text" class="form-control" formControlName="firstName">
+    <!-- Вывод ошибкок -->
+    <div class="alert alert-danger"
+         *ngIf="objectFormBuilder.get('firstName').errors && objectFormBuilder.get('firstName').touched"
+    >
+      <div *ngIf="objectFormBuilder.get('firstName').hasError('cannotContainMinMaxLength')">мин = 2; макс = 60, символов </div>
+      <div *ngIf="objectFormBuilder.get('firstName').hasError('cannotContainSeparator')">В строке недопустимые символы </div>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <label for="age"> Age : </label>
+    <input id="age" type="number" class="form-control" formControlName="age">
+    <!-- Вывод ошибкок -->
+    <div class="alert alert-danger"
+         *ngIf="objectFormBuilder.get('age').errors && objectFormBuilder.get('age').touched"
+    >
+      <div *ngIf="objectFormBuilder.get('age').getError('required')">
+        А поле Нужно заполнять ? - {{objectFormBuilder.get('age').getError('required')}}
+      </div>
+      <div *ngIf="objectFormBuilder.get('age').getError('min')">
+        мин  Число {{objectFormBuilder.get('age').getError('min').min}}
+      </div>
+      <div *ngIf="objectFormBuilder.get('age').getError('max')">
+        макс Число {{objectFormBuilder.get('age').getError('max').max}}
+      </div>
+    </div>
+  </div>
+
+
+<!--
+
+  <div class="form-group">
+    <label for="role"> Role : </label>
+    <select id="role" class="form-control" formControlName="role" >
+      <option *ngFor="let r of roles" [value]="r"> {{r}} </option>
+    </select>
+  </div>
+
+-->
+
+  <!-- Группа отдельных элементов управления -->
+  <div formGroupName="authorization" class="form-group">
+    <div class="form-row" >
+      <div class="col" >
+
+        <label for="email" > Email :</label>
+        <input id="email" type="text" class="form-control" formControlName="email" >
+        <!-- Вывод ошибкок -->
+        <div class="alert alert-danger"
+             *ngIf="objectFormBuilder.get('authorization').get('email').errors &&
+             objectFormBuilder.get('authorization').get('email').touched"
+        >
+          <div *ngIf="objectFormBuilder.get('authorization').get('email').hasError('required')">
+            Нужно заполнить!
+          </div>
+          <div *ngIf="objectFormBuilder.get('authorization').get('email').hasError('cannotContainInvalidEmail')">
+            "cannotContainInvalidEmail" - Недоволен
+          </div>
+        </div>
+
+      </div>
+      <div class="col">
+
+        <label for="password" > Password :</label>
+        <input id="password" type="text" class="form-control" formControlName="password" >
+        <!-- Вывод ошибкок -->
+        <div class="alert alert-danger"
+             *ngIf="objectFormBuilder.get('authorization').get('password').errors &&
+             objectFormBuilder.get('authorization').get('password').touched"
+        >
+          <div *ngIf="objectFormBuilder.get('authorization').get('password').hasError('required')">
+            Нужно заполнить!
+          </div>
+          <div *ngIf="objectFormBuilder.get('authorization').get('password').hasError('minlength')">
+            мин Кол.символов {{objectFormBuilder.get('authorization').get('password').getError('minlength').requiredLength }}
+          </div>
+          <div *ngIf="objectFormBuilder.get('authorization').get('password').hasError('maxlength')">
+            макс Кол.символов {{objectFormBuilder.get('authorization').get('password').getError('maxlength').requiredLength}}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Масив отдельных элементов управления -->
+  <div formArrayName="address" class="form-group">
+    <div *ngFor="let X of addressFormArray.controls; index as IndexFormAddressArray">
+
+      <span>Address {{IndexFormAddressArray + 1}}</span>
+
+      <span class="btn btn-sm btn-danger"
+            *ngIf="addressFormArray.controls.length > 1"
+            (click)="removeInput(IndexFormAddressArray)"> Remove {{IndexFormAddressArray + 1}}</span>
+
+      <!-- мы работаем с групой форм поетому Груперуем их спомошью [formGroupName] -->
+      <div  [formGroupName]="IndexFormAddressArray">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+
+
+              <label > City :
+                <input type="text" class="form-control" formControlName="city"  >
+              </label>
+
+
+              <label >Street :
+                <input type="text" class="form-control" formControlName="street">
+              </label>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <div class="form-group text-right" >
+    <input type="reset" class="btn btn-warning" value="reset" >
+    <input type="button" class="btn btn-danger" (click)="cancelForm()" value="Cancel" >
+    <button type="reset" class="btn btn-info" (click)="addInput()" >Add New Group</button>
+    <input type="button" class="btn btn-primary"
+           [disabled]="!objectFormBuilder.valid"  (click)="change(objectFormBuilder.value)"  value="Save" >
+  </div>
+
+</form>
+

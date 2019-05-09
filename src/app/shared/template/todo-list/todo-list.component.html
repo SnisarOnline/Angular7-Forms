@@ -1,0 +1,23 @@
+
+<p> List : </p>
+
+<p>{{newObject| json}}</p>
+
+<ul class="todo-list" *ngIf="arrayObject.length">
+
+  <li class="todo-item" *ngFor="let task of arrayObject">
+
+    <span class="firstName">{{ task.firstName }}</span>
+    <span class="lastName">{{ task.lastName }}</span>
+
+
+    <div class="actions">
+      <button class="delete icon" (click)="onDelete(task)">
+        <i class="material-icons">delete</i>
+      </button>
+    </div>
+
+  </li>
+
+</ul>
+

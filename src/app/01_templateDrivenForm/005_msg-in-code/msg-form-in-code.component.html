@@ -1,0 +1,59 @@
+<template-borders [title]="title">
+
+
+
+  <!-- #userFormVal - Шаблонная переменная(templateReferenceVariable) для проверки валидности всей формы
+   А также спомошью етой шаблонной переменной мы получаем доступ к форме из TS файла
+  -->
+  <form #userFormVal="ngForm" (ngSubmit)="createTasks(); userFormVal.reset()" >
+
+    <div class="form-group">
+      <label for="firstName"> FirstName : </label>
+      <input id="firstName" type="text" class="form-control" required
+             [(ngModel)]="objectSimpleForm.firstName" name="firstName"
+              #firstName="ngModel"
+              pattern="[a-zA-Zа-яА-Я0-9]{2,}" >
+      <!-- Изменили вывод ошибки -->
+      <div class="alert alert-danger" *ngIf="formErrors.firstName" >
+        {{formErrors.firstName}}
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="age"> Age : </label>
+      <input id="age" type="text" class="form-control" required
+             [(ngModel)]="objectSimpleForm.age" name="age"
+             #age="ngModel"
+             minlength="4"  >
+      <!-- Изменили вывод ошибки -->
+      <div class="alert alert-danger" *ngIf="formErrors.age" >
+        {{formErrors.age}}
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="role"> Role : </label>
+      <select id="role" class="form-control" required
+              [(ngModel)]="objectSimpleForm.role" name="role" >
+        <option *ngFor="let r of roles" [value]="r"> {{r}} </option>
+      </select>
+    </div>
+
+
+    <!-- Активируем кнопку если ошибок в форме нету -->
+    <button type="submit" class="btn btn-primary" [disabled]="!userFormVal.form.valid">Submit</button>
+    <button type="reset" class="btn btn-warning" >reset</button>
+  </form>
+
+
+
+
+
+
+
+
+  <template-list [title]="title" [addNewObject]="objectSimpleForm" [submit]="submit"></template-list>
+
+</template-borders>

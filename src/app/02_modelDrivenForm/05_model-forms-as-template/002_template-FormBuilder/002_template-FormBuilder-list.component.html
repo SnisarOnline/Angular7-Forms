@@ -1,0 +1,27 @@
+<template-borders [title]="title" [description]="description" >
+  <ul class="list-group" *ngIf="arrayObject.length">
+
+    <li class="list-group-item" *ngFor="let task of arrayObject; index as indexArr" >
+
+      <div class="alert alert-primary" *ngIf="indexArr !== recordIndex" >
+        <span > {{ task.firstName }} </span>
+        <span > age: {{ task.age }} </span>
+
+        <span class="text-right">
+          <button class="btn btn-primary" (click)="onDelete(task)">
+            <i class="material-icons">delete</i>
+          </button>
+          <button class="btn btn-primary" (click)="changes(indexArr)">
+            <i class="material-icons">cached</i>
+          </button>
+        </span>
+      </div>
+
+      <div class="alert alert-secondary" *ngIf="indexArr === recordIndex" >
+        <form-template-form-builder [recordObject]="task" (onChanged)="addInArray($event)" (onCancel)="cancel()" ></form-template-form-builder>
+      </div>
+
+    </li>
+
+  </ul>
+</template-borders>

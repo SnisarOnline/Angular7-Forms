@@ -1,0 +1,91 @@
+<template-borders [title]="title" [description]="description" >
+
+
+
+
+  <form [formGroup]="objectDynamicForm" (ngSubmit)="createTasks()" novalidate>
+
+    <div class="form-group">
+      <label for="firstName"> FirstName : </label>
+      <input id="firstName" type="text"
+             class="form-control"
+             formControlName="firstName">
+      <div class="alert alert-danger"
+           *ngIf="objectDynamicForm.get('firstName').errors && objectDynamicForm.get('firstName').touched">
+
+        <div *ngIf="objectDynamicForm.get('firstName').errors && !objectDynamicForm.get('firstName').untouched">
+          поиск Ошибки по регулярному выражению Работает
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Группа отдельных элементов управления -->
+    <!-- Группа В которой добавляются и удаляются дополнительные поля форм -->
+    <!-- Тоесть Ето Масив и называется  => formArrayName="address"-->
+    <div formArrayName="address" class="form-group">
+      <!-- Определим часть повторяющегося кода -->
+
+      <div *ngFor="let X of addressFormArray.controls; index as IndexFormAddressArray">
+      <!-- Смысл один и тотже/ Работают одинаково, Просто запись короче
+       {{ this.addressFormArray.controls == this.objectDynamicForm.controls.address.controls }}
+          <div *ngFor="let X of objectDynamicForm.controls.address.controls; index as IndexFormAddressArray">
+      -->
+
+        <span>Address {{IndexFormAddressArray + 1}}</span>
+
+        <!-- Выводим на всех формах -->
+        <span class="btn btn-sm btn-danger"
+              *ngIf="objectDynamicForm.get('address').controls.length > 1"
+              (click)="removeInput(IndexFormAddressArray)"> Remove {{IndexFormAddressArray + 1}}</span>
+
+        <div class="container">
+          <div class="row">
+            <div class="col">
+
+              <label for="city" > City :</label>
+              <input id="city" type="text" class="form-control" [formControlName]="IndexFormAddressArray"  >
+
+              <div class="alert alert-danger"
+                   *ngIf="addressFormArray.at(IndexFormAddressArray).errors
+                     &&
+                   addressFormArray.at(IndexFormAddressArray).touched"
+              >
+                <p *ngIf="addressFormArray.at(IndexFormAddressArray).hasError('required')" >
+                  err required : {{addressFormArray.at(IndexFormAddressArray).getError('required') }}
+                </p>
+                <p *ngIf="addressFormArray.at(IndexFormAddressArray).hasError('minlength')" >
+                  err minLength : {{addressFormArray.at(IndexFormAddressArray).getError('minlength').requiredLength }}
+                </p>
+                <p *ngIf="addressFormArray.at(IndexFormAddressArray).hasError('pattern')" >
+                  err pattern : {{objectDynamicForm.get('address').at(IndexFormAddressArray).getError('pattern').requiredPattern }}
+                </p>
+                <i style="font-size: 10px">
+                  <a href="https://angular.io/api/forms/FormArray#at">at</a> для получения индекса данного инпута с ошибкой
+                </i>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+    <!-- Заменяем проверку валидности формы -->
+    <button type="submit" class="btn btn-primary" [disabled]="objectDynamicForm.invalid" > Submit </button>
+    <button type="reset" class="btn btn-warning" >Reset</button>
+    <button type="reset" class="btn btn-info" (click)="addInput()" >Add New Input</button>
+  </form>
+
+
+
+
+
+  <template-list [title]="title" [addNewObject]="objectDynamicForm.value" [submit]="submit"></template-list>
+
+</template-borders>
